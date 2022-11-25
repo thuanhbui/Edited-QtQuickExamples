@@ -62,7 +62,11 @@ void YbQuickView::showTrayIcon(){
 }
 void YbQuickView::setMaxYbView(QSize size)
 {
-    this->setMaximumSize(size);
+    int currentWidth = rand();
+    size.setWidth(currentWidth);
+    if (size.width() > 5) {
+        this->setMaximumSize(size);
+    }
 }
 
 void YbQuickView::setHasMouse(bool isHasMouse)
@@ -90,7 +94,9 @@ void YbQuickView::setSourceAndRegsiterObj(const QUrl &url, bool regsiter)
 
 void YbQuickView::setCanMoveRange(const QPoint &point)
 {
-    moveRangePostion = point;
+    if (!point.isNull()) {
+        moveRangePostion = point;
+    }
 }
 void YbQuickView::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -417,13 +423,14 @@ void YbQuickView::slotShowMaxAndNormal(bool showMax)
 /// 接受来自QML的请求
 void YbQuickView::slotRecevQmlReq(QVariant var, QString cmd)
 {
-    if(var.toString()=="system"){
-        if(cmd == "close"){
-            this->close();
-            qApp->quit();
-        }else if(cmd == "min"){
-            this->showMinimized();
+    if (!var.isNull() && !cmd.isNull()) {
+        if(var.toString()=="system"){
+            if(cmd == "close"){
+                this->close();
+                qApp->quit();
+            }else if(cmd == "min"){
+                this->showMinimized();
+            }
         }
     }
-
 }
