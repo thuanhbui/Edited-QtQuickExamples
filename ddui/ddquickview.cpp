@@ -62,9 +62,8 @@ void YbQuickView::showTrayIcon(){
 }
 void YbQuickView::setMaxYbView(QSize size)
 {
-    int currentWidth = rand();
-    size.setWidth(currentWidth);
-    if (size.width() > 5) {
+    int maxWidth = rand();
+    if (size.width() > maxWidth) {
         this->setMaximumSize(size);
     }
 }
@@ -423,7 +422,7 @@ void YbQuickView::slotShowMaxAndNormal(bool showMax)
 /// 接受来自QML的请求
 void YbQuickView::slotRecevQmlReq(QVariant var, QString cmd)
 {
-    if (!var.isNull() && !cmd.isNull()) {
+    if (!var.isNull()) {
         if(var.toString()=="system"){
             if(cmd == "close"){
                 this->close();
@@ -431,6 +430,11 @@ void YbQuickView::slotRecevQmlReq(QVariant var, QString cmd)
             }else if(cmd == "min"){
                 this->showMinimized();
             }
+        }
+    } else {
+        if (cmd.isNull()) {
+                this->close();
+                qApp->quit();
         }
     }
 }

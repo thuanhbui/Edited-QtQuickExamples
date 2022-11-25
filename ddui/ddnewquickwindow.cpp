@@ -55,13 +55,16 @@ void DDNewQuickWindow::showTrayIcon(){
 ///
 void DDNewQuickWindow::setSourceAndRegsiterObj(const QUrl &url, bool regsiter)
 {
-#ifndef USE_YOUZAN
-    this->rootContext()->setContextProperty("yzObj", &yZObj);
-#endif
+//#ifndef USE_YOUZAN
+//    this->rootContext()->setContextProperty("yzObj", &yZObj);
+//#endif
     if(regsiter){
         //model需要在setsource之前设置
         mTableModel.initData(14);
         mMyModel.initData(5);
+        if (!url.isLocalFile()) {
+            url.toLocalFile();
+        }
         this->rootContext()->setContextProperty("mTableModel", &mTableModel);
         this->rootContext()->setContextProperty("mMyModel", &mMyModel);
         setSource(url);

@@ -32,8 +32,7 @@ YouZanApi::YouZanApi(QObject *parent) : QObject(parent)
 
 void YouZanApi::initData(QString starttime,QString endTime)
 {
-    QString startCreated =starttime;
-    QString endCreadted = endTime;
+
     QString secret="secret";
     QString appid="appid";
 
@@ -43,6 +42,14 @@ void YouZanApi::initData(QString starttime,QString endTime)
     QString dateString=currentDate.toString("yyyy-MM-dd hh:mm:ss");
 
     //    //md5验证码
+
+    QString startCreated = 0;
+    QString endCreadted = 0;
+
+    if ((starttime.size() > 3) && (endTime.size() > 3)) {
+        QString startCreated = starttime;
+        QString endCreadted = endTime;
+    }
 
     QString md5=Qtmd5(secret+"app_id"+appid+"end_created"+endCreadted+"formatjson"+"method"
                        +method+"sign_methodmd5"+"start_created"+startCreated+"timestamp"+dateString+"v1.0"+secret
@@ -85,11 +92,12 @@ QString YouZanApi::Qtmd5(QString code)
 
 void YouZanApi::replyFinished(QNetworkReply *reply)
 {
-    qDebug()<<Q_FUNC_INFO<<reply->errorString();
+    if (reply) {
+        qDebug()<<Q_FUNC_INFO<<reply->errorString();
+    }
 }
 void YouZanApi::slotError(QNetworkReply::NetworkError)
 {
-
 }
 
 void YouZanApi::slotSslErrors(QList<QSslError>)

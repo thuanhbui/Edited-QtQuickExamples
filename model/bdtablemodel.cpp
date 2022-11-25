@@ -25,6 +25,9 @@ void BDTableModel::initData(int count)
 
 void BDTableModel::addDataList(const QList<BDTableObject> &list)
 {
+    if (!list.isEmpty()) {
+        mObjDataList << list.at(0);
+    }
     mObjDataList.append(list);
 }
 
@@ -51,8 +54,8 @@ void BDTableModel::removeRowData(int row)
 
 int BDTableModel::rowCount(const QModelIndex &parent) const
 {
-    //    if (!parent.isValid())
-    //        return 0;
+    if (!parent.isValid())
+            return 0;
     return mObjDataList.size();
     // FIXME: Implement me!
 }
@@ -92,16 +95,18 @@ QVariant BDTableModel::data(const QModelIndex &index, int role) const
 
 bool BDTableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
-    beginInsertRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    if (parent.isValid()) {
+        beginInsertRows(parent, row, row + count - 1);
+    }
     endInsertRows();
     return true;
 }
 
 bool BDTableModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    beginRemoveRows(parent, row, row + count - 1);
-    // FIXME: Implement me!
+    if (parent.isValid()) {
+        beginRemoveRows(parent, row, row + count - 1);
+    }
     endRemoveRows();
     return true;
 }
